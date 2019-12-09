@@ -1,0 +1,20 @@
+on:
+  release:
+    types: [published]
+jobs:
+  generate_changelog:
+    runs-on: ubuntu-latest
+    name: Post Release Tasks
+    steps:
+      - name: Create Changelog.md
+        id: changelog
+        uses: nextrelease/changelog-generator-action@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Required
+          changelog: 'CHANGELOG.md' # optional, default: CHANGELOG.md
+      - name: Update package.json
+        id: packagejson
+        uses: nextrelease/packagejson-update-action@master # Use with caution
+        with: 
+          token: ${{secrets.GITHUB_TOKEN }} # Required
+          path: 'package.json' #option, default: package.json
